@@ -33,7 +33,8 @@ namespace Code
 		}
 
 		/* Say you have an array for which the ith element is the price of a given stock on day i.
-		 * If you were only permitted to complete at most one transaction (i.e., buy one and sell one share of the stock), design an algorithm to find the maximum profit.
+		 * If you were only permitted to complete at most one transaction 
+		 * (i.e., buy one and sell one share of the stock), design an algorithm to find the maximum profit.
 		 * Note that you cannot sell a stock before you buy one.
 		 */
 		public int MaxProfit(int[] prices)
@@ -68,6 +69,17 @@ namespace Code
 			}
 
 			return 0;
+		}
+
+		/* Given an array of integers, find if the array contains any duplicates.
+		 * Your function should return true if any value appears at least twice in the array, 
+		 * and it should return false if every element is distinct.
+		 */
+		public bool ContainsDuplicate(int[] nums)
+		{
+			HashSet<int> set = new HashSet<int>(nums);
+
+			return set.Count != nums.Length;
 		}
 	}
 }
