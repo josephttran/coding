@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Code
 {
@@ -30,6 +31,35 @@ namespace Code
 			}
 
 			throw new ArgumentException("No two sum solution");
+		}
+
+		/* Given an array nums of n integers where n > 1, return an array output such that 
+		 * output[i] is equal to the product of all the elements of nums except nums[i].
+		 * 
+		 * Constraint: It's guaranteed that the product of the elements of any prefix or suffix of the array 
+		 * (including the whole array) fits in a 32 bit integer.
+		 * Solve without division and in O(n). 
+		 * Constant space complexity. (The output array does not count as extra space for the purpose of space complexity analysis.)
+		 */
+		public int[] ProductExceptSelf(int[] nums)
+		{
+			int[] output = Enumerable.Repeat(1, nums.Length).ToArray();
+			int leftProduct = 1;
+			int rightProduct = 1;
+
+			for (int i = 1; i < nums.Length; ++i)
+			{
+				leftProduct *= nums[i - 1];
+				output[i] *= leftProduct;
+			}
+
+			for (int i = nums.Length - 2; i >= 0; --i)
+            {
+				rightProduct *= nums[i + 1];
+				output[i] *= rightProduct;
+            }
+
+			return output;
 		}
 
 		/* Say you have an array for which the ith element is the price of a given stock on day i.
