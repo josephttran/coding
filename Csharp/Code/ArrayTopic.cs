@@ -373,6 +373,45 @@ namespace Code
 			}
 		}
 
+		/* Suppose an array sorted in ascending order is rotated at some pivot unknown to you beforehand.
+		 * (i.e.,  [0,1,2,4,5,6,7] might become  [4,5,6,7,0,1,2]).
+		 * Find the minimum element.
+		 * You may assume no duplicate exists in the array.
+		 */
+		public int FindMinRotatedSortedArray(int[] nums)
+		{
+			if (nums.Length == 1)
+            {
+				return nums[0];
+            }
+
+			if (nums[0] < nums[nums.Length - 1])
+            {
+				return nums[0];
+            }
+
+			int low = 0;
+			int high = nums.Length - 1;
+
+
+			while (low + 1 != high)
+            {
+				int mid = (high + low) / 2;
+
+				if (nums[low] < nums[mid])
+                {
+					low = mid;
+                }
+
+				if (nums[mid] < nums[high])
+				{
+					high = mid;
+                }
+            }
+
+			return nums[high];
+		}
+
 		/* Given an array of integers, find if the array contains any duplicates.
 		 * Your function should return true if any value appears at least twice in the array, 
 		 * and it should return false if every element is distinct.
