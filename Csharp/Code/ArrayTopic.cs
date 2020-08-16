@@ -4,8 +4,8 @@ using System.Linq;
 
 namespace Code
 {
-    public class ArrayTopic
-    {
+	public class ArrayTopic
+	{
 		/* Given an array of integers, return indices of the two numbers such that they add up to a specific target.
 		 * You may assume that each input would have exactly one solution, and you may not use the same element twice.
 		 */
@@ -18,14 +18,14 @@ namespace Code
 				int complement = target - nums[i];
 
 				if (dictionary.TryGetValue(complement, out int value))
-                {
+				{
 					return new int[] { value, i };
-                }
+				}
 
 				if (dictionary.TryGetValue(nums[i], out _))
-                {
+				{
 					continue;
-                }
+				}
 
 				dictionary.Add(nums[i], i);
 			}
@@ -33,6 +33,90 @@ namespace Code
 			throw new ArgumentException("No two sum solution");
 		}
 
+		/*Suppose an array sorted in ascending order is rotated at some pivot unknown to you beforehand.
+		 * (i.e., [0,1,2,4,5,6,7] might become [4,5,6,7,0,1,2]).
+		 * You are given a target value to search. If found in the array return its index, otherwise return -1.
+		 * You may assume no duplicate exists in the array.
+		 * Your algorithm's runtime complexity must be in the order of O(log n).	
+		 */
+		public int SearchRotatedSortedArray(int[] nums, int target)
+		{
+			if (nums.Length == 1)
+			{
+				return nums[0] == target ? 0 : -1;
+			}
+
+			if (nums[0] < nums[nums.Length - 1])
+			{
+				return BinarySearch(nums, target);
+			}
+			else
+			{
+				int low = 0;
+				int high = nums.Length - 1;
+
+				while (low + 1 != high)
+				{
+					int mid = (high + low) / 2;
+
+					if (nums[low] < nums[mid])
+					{
+						low = mid;
+					}
+
+					if (nums[mid] < nums[high])
+					{
+						high = mid;
+					}
+				}
+
+				if (target < nums[0] && target > nums[nums.Length - 1])
+                {
+					return -1;
+                }
+
+				if (target >= nums[0] && target <= nums[low])
+                {
+					return BinarySearch(nums.Take(high).ToArray(), target);
+				}
+				else
+                {
+					int targetIndex = BinarySearch(nums.Skip(high).Take(nums.Length - low).ToArray(), target);
+
+					return targetIndex == -1 ? -1 : low + 1 + targetIndex;
+				}
+			}
+		}
+
+		int BinarySearch(int[] nums, int target)
+		{
+			int low = 0;
+			int high = nums.Length - 1;
+
+			while (low <= high)
+			{
+				int mid = (high + low) / 2;
+
+				if (target == nums[mid])
+				{
+					return mid;
+				}
+				else
+				{
+					if (target < nums[mid])
+					{
+						high = mid - 1;
+					}
+					else
+					{
+						low = mid + 1;
+					}
+				}
+			}
+
+			return -1;
+		}
+	
 		/* Given an array nums of n integers where n > 1, return an array output such that 
 		 * output[i] is equal to the product of all the elements of nums except nums[i].
 		 * 
@@ -392,7 +476,6 @@ namespace Code
 
 			int low = 0;
 			int high = nums.Length - 1;
-
 
 			while (low + 1 != high)
             {
