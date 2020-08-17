@@ -15,24 +15,6 @@ namespace Code.Tests
         }
 
         [Test]
-        public void ThreeSum_ArrayOfInteger_ReturnAllUniqueTripletsSumZero()
-        {
-            // Arrange
-            int[] nums = { -1, 0, 1, 2, -1, -4 };
-            IList<IList<int>> expected = new List<IList<int>>()
-            {
-                new List<int>() { -1, 0, 1 },
-                new List<int>() { -1, -1, 2 }
-            };
-
-            // Act
-            IList<IList<int>> allUniqueTriplets = _ArrayTopic.ThreeSum(nums);
-
-            // Assert
-            CollectionAssert.AreEquivalent(expected, allUniqueTriplets);
-        }
-
-        [Test]
         public void ThreeSum_ArrayOfZero_ReturnAllUniqueTripletsSumZero()
         {
             // Arrange
@@ -46,6 +28,49 @@ namespace Code.Tests
             IList<IList<int>> allUniqueTriplets = _ArrayTopic.ThreeSum(nums);
 
             // Assert
+            CollectionAssert.AreEquivalent(expected, allUniqueTriplets);
+        }
+
+        [Test]
+        public void ThreeSum_ArrayOfInteger_ReturnAllUniqueTripletsSumZero()
+        {
+            int[] nums = { -1, 0, 1, 2, -1, -4 };
+            IList<IList<int>> expected = new List<IList<int>>()
+            {
+                new List<int>() { -1, 0, 1 },
+                new List<int>() { -1, -1, 2 }
+            };
+
+            IList<IList<int>> allUniqueTriplets = _ArrayTopic.ThreeSum(nums);
+
+            CollectionAssert.AreEquivalent(expected, allUniqueTriplets);
+        }
+
+        [Test]
+        public void ThreeSum_TestArrayOfInteger_ReturnAllUniqueTripletsSumZero()
+        {
+            int[] nums = { 1, 1, -2 };
+            IList<IList<int>> expected = new List<IList<int>>()
+            {
+                new List<int>() { -2, 1, 1 }
+            };
+
+            IList<IList<int>> allUniqueTriplets = _ArrayTopic.ThreeSum(nums);
+
+            CollectionAssert.AreEquivalent(expected, allUniqueTriplets);
+        }
+
+        [Test]
+        public void ThreeSum_AnotherArrayOfInteger_ReturnAllUniqueTripletsSumZero()
+        {
+            int[] nums = { -1, 0, 1, 0 };
+            IList<IList<int>> expected = new List<IList<int>>()
+            {
+                new List<int>() { -1, 0 ,1 }
+            };
+
+            IList<IList<int>> allUniqueTriplets = _ArrayTopic.ThreeSum(nums);
+
             CollectionAssert.AreEquivalent(expected, allUniqueTriplets);
         }
 

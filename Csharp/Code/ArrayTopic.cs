@@ -39,60 +39,71 @@ namespace Code
 		 */
 		public IList<IList<int>> ThreeSum(int[] nums)
 		{
-			IList<IList<int>> allUniqueTriplets = new List<IList<int>>();
-
 			if (nums.Length < 3)
             {
-				return allUniqueTriplets; 
-            }
+				return new List<IList<int>>();
+			}
 
-			Dictionary<int, List<int>> dictNum = new Dictionary<int, List<int>>();
+			IList<IList<int>> allUniqueTriplets = new List<IList<int>>();
+			Dictionary<int, List<int>> numberIndexDictionary = new Dictionary<int, List<int>>();
 
 			for (int i = 0; i < nums.Length; ++i)
 			{
-				if (dictNum.TryGetValue(nums[i], out List<int> indexList))
+				if (numberIndexDictionary.TryGetValue(nums[i], out List<int> indexList))
 				{
 					indexList.Add(i);
+					continue;
 				}
-				else
-				{
-					dictNum[nums[i]] = new List<int>() { i };
+
+				numberIndexDictionary[nums[i]] = new List<int>() { i };
+			}
+
+			if (numberIndexDictionary.TryGetValue(0, out List<int> zeroIndices))
+            {
+				if (zeroIndices.Count > 2)
+                {
+					allUniqueTriplets.Add(new List<int>() { 0, 0, 0 });
 				}
 			}
 
-			HashSet<List<int>> hashSet = new HashSet<List<int>>();
-
-			for (int i = 0; i < nums.Length - 1; ++i)
+			for (int i = 0; i < nums.Length; ++i)
 			{
-				for (int j = i + 1; j + 1 < nums.Length; ++j)
+				foreach (var key in numberIndexDictionary.Keys)
 				{
-					int complement = (nums[i] + nums[j]) * -1;
-
-					if (dictNum.TryGetValue(complement, out List<int> indexList))
+					if (nums[i] == 0 && key == 0)
                     {
-						foreach (int index in indexList)
+						continue;
+                    }
+
+					int complement = (key + nums[i]) * -1;
+
+					if (numberIndexDictionary.TryGetValue(complement, out List<int> complementIndexList))
+					{
+						if (complementIndexList.Contains(i) && complementIndexList.Count == 1 || complement == key && complementIndexList.Count == 1)
                         {
-							if (index != i && index != j)
+							continue;
+                        }
+
+						if (numberIndexDictionary.TryGetValue(key, out List<int> keyIndexList))
+                        {
+							if (nums[i] == key && keyIndexList.Count == 1)
 							{
-								int[] arr = new int[3] { nums[i], nums[j], nums[index] };
+								continue;
+							}
 
-								Array.Sort(arr);
+							int[] arr = new int[3] { nums[i], key, complement };
 
-								List<int> sortedTriplet = new List<int>(arr);
+							Array.Sort(arr);
 
-								hashSet.Add(sortedTriplet);
+							List<int> sortedTriplet = new List<int>(arr);
+					
+							if (!allUniqueTriplets.Any(list => list.SequenceEqual(sortedTriplet)))
+							{
+								allUniqueTriplets.Add(sortedTriplet);
 							}
                         }
-                    }
+					}
 				}
-			}
-
-			foreach (var item in hashSet)
-			{
-                if (!allUniqueTriplets.Any(list => list.SequenceEqual(item)))
-                {
-                    allUniqueTriplets.Add(item);
-                }
 			}
 
 			return allUniqueTriplets;
