@@ -33,6 +33,71 @@ namespace Code
 			throw new ArgumentException("No two sum solution");
 		}
 
+		/* Given an array nums of n integers, are there elements a, b, c in nums such that a + b + c = 0? 
+		 * Find all unique triplets in the array which gives the sum of zero.
+		 * Note: The solution set must not contain duplicate triplets.
+		 */
+		public IList<IList<int>> ThreeSum(int[] nums)
+		{
+			IList<IList<int>> allUniqueTriplets = new List<IList<int>>();
+
+			if (nums.Length < 3)
+            {
+				return allUniqueTriplets; 
+            }
+
+			Dictionary<int, List<int>> dictNum = new Dictionary<int, List<int>>();
+
+			for (int i = 0; i < nums.Length; ++i)
+			{
+				if (dictNum.TryGetValue(nums[i], out List<int> indexList))
+				{
+					indexList.Add(i);
+				}
+				else
+				{
+					dictNum[nums[i]] = new List<int>() { i };
+				}
+			}
+
+			HashSet<List<int>> hashSet = new HashSet<List<int>>();
+
+			for (int i = 0; i < nums.Length - 1; ++i)
+			{
+				for (int j = i + 1; j + 1 < nums.Length; ++j)
+				{
+					int complement = (nums[i] + nums[j]) * -1;
+
+					if (dictNum.TryGetValue(complement, out List<int> indexList))
+                    {
+						foreach (int index in indexList)
+                        {
+							if (index != i && index != j)
+							{
+								int[] arr = new int[3] { nums[i], nums[j], nums[index] };
+
+								Array.Sort(arr);
+
+								List<int> sortedTriplet = new List<int>(arr);
+
+								hashSet.Add(sortedTriplet);
+							}
+                        }
+                    }
+				}
+			}
+
+			foreach (var item in hashSet)
+			{
+                if (!allUniqueTriplets.Any(list => list.SequenceEqual(item)))
+                {
+                    allUniqueTriplets.Add(item);
+                }
+			}
+
+			return allUniqueTriplets;
+		}
+
 		/*Suppose an array sorted in ascending order is rotated at some pivot unknown to you beforehand.
 		 * (i.e., [0,1,2,4,5,6,7] might become [4,5,6,7,0,1,2]).
 		 * You are given a target value to search. If found in the array return its index, otherwise return -1.
