@@ -39,70 +39,54 @@ namespace Code
 		 */
 		public IList<IList<int>> ThreeSum(int[] nums)
 		{
-			if (nums.Length < 3)
-            {
-				return new List<IList<int>>();
-			}
-
 			IList<IList<int>> allUniqueTriplets = new List<IList<int>>();
-			Dictionary<int, List<int>> numberIndexDictionary = new Dictionary<int, List<int>>();
 
-			for (int i = 0; i < nums.Length; ++i)
+			Array.Sort(nums);
+
+			for (int i = 0; i < nums.Length - 2; ++i)
 			{
-				if (numberIndexDictionary.TryGetValue(nums[i], out List<int> indexList))
-				{
-					indexList.Add(i);
-					continue;
-				}
-
-				numberIndexDictionary[nums[i]] = new List<int>() { i };
-			}
-
-			if (numberIndexDictionary.TryGetValue(0, out List<int> zeroIndices))
-            {
-				if (zeroIndices.Count > 2)
+				if (i > 0 && nums[i] == nums[i - 1])
                 {
-					allUniqueTriplets.Add(new List<int>() { 0, 0, 0 });
-				}
-			}
+					continue;
+                }
 
-			for (int i = 0; i < nums.Length; ++i)
-			{
-				foreach (var key in numberIndexDictionary.Keys)
+				int left = i + 1;
+				int right = nums.Length - 1;
+				int prevLeft = Int32.MinValue;
+				int prevRight = Int32.MaxValue;
+
+				while (left < right)
 				{
-					if (nums[i] == 0 && key == 0)
+					if (nums[i] + nums[left] > 0)
+					{
+						break;
+					}
+
+					if (nums[i] + nums[left] + nums[right] == 0)
+					{
+						allUniqueTriplets.Add(new List<int>() { nums[i], nums[left], nums[right] });
+					}
+
+					if (nums[i] + nums[left] + nums[right] < 0)
                     {
-						continue;
+						prevLeft = nums[left];
+						left++;
+                    }
+					else
+                    {
+						prevRight = nums[right];
+						right--;
+                    }
+					
+					while(prevLeft == nums[left] && left < right)
+                    {
+						left++;
                     }
 
-					int complement = (key + nums[i]) * -1;
-
-					if (numberIndexDictionary.TryGetValue(complement, out List<int> complementIndexList))
+					while (prevRight == nums[right] && left < right)
 					{
-						if (complementIndexList.Contains(i) && complementIndexList.Count == 1 || complement == key && complementIndexList.Count == 1)
-                        {
-							continue;
-                        }
-
-						if (numberIndexDictionary.TryGetValue(key, out List<int> keyIndexList))
-                        {
-							if (nums[i] == key && keyIndexList.Count == 1)
-							{
-								continue;
-							}
-
-							int[] arr = new int[3] { nums[i], key, complement };
-
-							Array.Sort(arr);
-
-							List<int> sortedTriplet = new List<int>(arr);
-					
-							if (!allUniqueTriplets.Any(list => list.SequenceEqual(sortedTriplet)))
-							{
-								allUniqueTriplets.Add(sortedTriplet);
-							}
-                        }
-					}
+						right--;
+					}	
 				}
 			}
 
