@@ -1,10 +1,10 @@
 ﻿using NUnit.Framework;
 using System.Collections.Generic;
 
-namespace Code.Tests
+namespace Code.Tests.ArrayTopicTests
 {
     [TestFixture]
-    class ArrayTopicThreeSumTests
+    class ThreeSumTests
     {
         private ArrayTopic _ArrayTopic;
 

@@ -1,9 +1,9 @@
 ﻿using NUnit.Framework;
 
-namespace Code.Tests
+namespace Code.Tests.ArrayTopicTests
 {
     [TestFixture]
-    class ArrayTopicFindMinRotatedSortedArrayTests
+    class FindMinRotatedSortedArrayTests
     {
         private ArrayTopic _ArrayTopic;
 
