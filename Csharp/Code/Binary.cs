@@ -6,6 +6,25 @@ namespace Code
 {
     public class Binary
     {
+        /* Write a function that takes an unsigned integer and return the number of '1' bits it has (also known as the Hamming weight).
+         */
+        public int HammingWeight(uint n)
+        {
+            int numberOfOne = 0;
+
+            string nString = Convert.ToString(n, toBase: 2);
+
+            foreach (char c in nString)
+            {
+                if (c == '1')
+                {
+                    numberOfOne++;
+                }
+            }
+
+            return numberOfOne;
+        }
+
         // Calculate the sum of two integers a and b, but you are Not allowed to use the operator + and -.
         public int SumOfTwoInteger(int a, int b)
         {
