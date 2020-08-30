@@ -102,6 +102,33 @@ namespace Code
             return missingNumber;
         }
 
+        /* Reverse bits of a given 32 bits unsigned integer.
+         * n length = 32
+         */
+        public uint ReverseBits(uint n)
+        {
+            string nString = Convert.ToString(n, 2);
+            StringBuilder sb = new StringBuilder();
+            int i = 0;
+
+            while (i < nString.Length)
+            {
+                sb.Append(nString[nString.Length - 1 - i]);
+                i++;
+            }
+
+            while (i < 32)
+            {
+                sb.Append('0');
+                i++;
+            }
+
+            string reverseString = sb.ToString();
+            uint reverseBits = Convert.ToUInt32(reverseString, 2);
+
+            return reverseBits;
+        }
+
         // Calculate the sum of two integers a and b, but you are Not allowed to use the operator + and -.
         public int SumOfTwoInteger(int a, int b)
         {
