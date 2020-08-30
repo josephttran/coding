@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Code
@@ -87,6 +88,18 @@ namespace Code
             }
 
             return numberOfOne;
+        }
+
+        /* Given an array containing n distinct numbers taken from 0, 1, 2, ..., n, 
+         * find the one that is missing from the array.
+         */
+        public int MissingNumber(int[] nums)
+        {
+            int completeSum = nums.Length * (nums.Length + 1) / 2;
+            int partialSum = nums.Sum();
+            int missingNumber = completeSum - partialSum;
+
+            return missingNumber;
         }
 
         // Calculate the sum of two integers a and b, but you are Not allowed to use the operator + and -.
