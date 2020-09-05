@@ -63,5 +63,55 @@ namespace Code
 
             return -1;
         }
+
+        /* Given an unsorted array of integers, find the length of longest increasing subsequence.
+         */
+        public int LongestIncreasingSubsequenceLength(int[] nums)
+        {
+            if (nums.Length == 0)
+            {
+                return 0;
+            }
+
+            int longest = -1;
+
+            int[] longestWithoutSelf = Enumerable.Repeat(0, nums.Length).ToArray();
+
+            for (int i = 0; i < nums.Length; ++i)
+            {
+                int prev = nums[i];
+                int prevPrevHigh = i;
+
+                for (int j = i + 1; j < nums.Length; ++j)
+                {
+                    if (prev == nums[j])
+                    {
+                        continue;
+                    }
+
+                    if (prev < nums[j])
+                    {
+                        longestWithoutSelf[i] += 1;
+                        prevPrevHigh = prev;
+                        prev = nums[j];
+                    }
+
+                    if (prev > nums[j])
+                    {
+                        if (prevPrevHigh < nums[j])
+                        {
+                            prev = nums[j];
+                        }
+                    }         
+                }
+
+                if (longest < longestWithoutSelf[i])
+                {
+                    longest = longestWithoutSelf[i];
+                }
+            }
+
+            return longest + 1;
+        }
     }
 }
