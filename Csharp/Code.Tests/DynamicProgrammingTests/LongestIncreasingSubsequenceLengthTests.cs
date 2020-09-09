@@ -13,6 +13,17 @@ namespace Code.Tests.DynamicProgrammingTests
             _dynamicProgramming = new DynamicProgramming();
         }
 
+        [Test]
+        public void LongestIncreasingSubsequenceLength_EmptyArray_ShouldReturnZero()
+        {
+            int[] nums = new int[] { };
+            int expected = 0;
+
+            int result = _dynamicProgramming.LongestIncreasingSubsequenceLength(nums);
+
+            Assert.AreEqual(expected, result);
+        }
+
         /* The longest increasing subsequence is [2,3,7,101], therefore the length is 4. 
          */
         [Test]
