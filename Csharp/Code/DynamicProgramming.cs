@@ -64,6 +64,76 @@ namespace Code
             return -1;
         }
 
+        /* Given two strings text1 and text2, return the length of their longest common subsequence.
+         * A subsequence of a string is a new string generated from the original string with 
+         * some characters(can be none) deleted without changing the relative order of the remaining characters. 
+         * (eg, "ace" is a subsequence of "abcde" while "aec" is not). 
+         * A common subsequence of two strings is a subsequence that is common to both strings. 
+         * 
+         * If there is no common subsequence, return 0.
+         * The input strings consist of lowercase English characters only.
+         */
+        public int LongestCommonSubsequence(string text1, string text2)
+        {
+            if (text1.Length == 0 || text2.Length == 0)
+            {
+                return 0;
+            }
+
+            string row = text1;
+            string col = text2;
+            int[,] commons = new int[row.Length, col.Length];
+
+            for (int j = 0; j < col.Length; ++j)
+            {
+                if (row[0] == col[j])
+                {
+                    while (j < col.Length)
+                    {
+                        commons[0, j] = 1;
+                        j += 1;
+                    }
+                }
+                else
+                {
+                    commons[0, j] = 0;
+                }
+            }
+
+            for (int i = 1; i < row.Length; ++i)
+            {
+                if (row[i] == col[0])
+                {
+                    while (i < row.Length)
+                    {
+                        commons[i, 0] = 1;
+                        i += 1;
+                    }
+                }
+                else
+                {
+                    commons[i, 0] = commons[i - 1, 0];
+                }
+            }
+
+            for (int i = 1; i < row.Length; ++i)
+            {
+                for (int j = 1; j < col.Length; ++j)
+                {
+                    if (row[i] == col[j])
+                    {
+                        commons[i, j] = 1 + commons[i - 1, j - 1];
+                    }
+                    else
+                    {
+                        commons[i, j] = Math.Max(commons[i, j - 1], commons[i - 1, j]);
+                    }
+                }
+            }
+
+            return commons[row.Length - 1, col.Length - 1];
+        }
+
         /* Given an unsorted array of integers, find the length of longest increasing subsequence.
          */
         public int LongestIncreasingSubsequenceLength(int[] nums)
