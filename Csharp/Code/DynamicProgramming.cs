@@ -167,5 +167,33 @@ namespace Code
 
             return longest.Count;
         }
+
+        /* Given a non-empty string s and a dictionary wordDict containing a list of non-empty words, 
+         * determine if s can be segmented into a space-separated sequence of one or more dictionary words.
+         * 
+         * The same word in the dictionary may be reused multiple times in the segmentation.
+         * You may assume the dictionary does not contain duplicate words.
+         */
+        public bool WordBreak(string s, IList<string> wordDict)
+        {
+            HashSet<string> set = new HashSet<string>(wordDict);
+            // Index 0 empty string is true
+            bool[] canBreak = Enumerable.Repeat(false, s.Length + 1).ToArray();
+            canBreak[0] = true;
+
+            for (int subLength = 1; subLength < canBreak.Length; ++subLength)
+            {
+                for (int start = 0; start < subLength; ++start)
+                {
+                    if (canBreak[start] && set.Contains(s.Substring(start, subLength - start)))
+                    {
+                        canBreak[subLength] = true;
+                        break;
+                    }
+                }
+            }
+
+            return canBreak[canBreak.Length - 1];
+        }
     }
 }
