@@ -183,9 +183,9 @@ namespace Code
 
             for (int subLength = 1; subLength < canBreak.Length; ++subLength)
             {
-                for (int start = 0; start < subLength; ++start)
+                for (int start = subLength; start > 0; --start)
                 {
-                    if (canBreak[start] && set.Contains(s.Substring(start, subLength - start)))
+                    if (canBreak[start - 1] && set.Contains(s.Substring(start - 1, subLength - start + 1)))
                     {
                         canBreak[subLength] = true;
                         break;
