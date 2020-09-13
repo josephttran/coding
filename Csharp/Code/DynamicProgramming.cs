@@ -64,6 +64,37 @@ namespace Code
             return -1;
         }
 
+        /* Given an integer array with all positive numbers and no duplicates, 
+         * find the number of possible combinations that add up to a positive integer target.
+         */
+        public int CombinationSumIV(int[] nums, int target)
+        {
+            Array.Sort(nums);
+            int[] dp = new int[target + 1];
+
+            for (int i = 1; i < dp.Length; ++i)
+            {
+                for (int j = 0; j < nums.Length; ++j)
+                {
+                    if (i < nums[j])
+                    {
+                        break;
+                    }
+
+                    if (i == nums[j])
+                    {
+                        dp[i] += 1;
+                    }
+                    else
+                    {
+                        dp[i] += dp[i - nums[j]];
+                    }
+                }
+            }
+
+            return dp[target];
+        }
+
         /* Given two strings text1 and text2, return the length of their longest common subsequence.
          * A subsequence of a string is a new string generated from the original string with 
          * some characters(can be none) deleted without changing the relative order of the remaining characters. 
