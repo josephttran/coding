@@ -133,6 +133,51 @@ namespace Code
             return dp[dp.Length - 1];
         }
 
+        /* All houses are arranged in a circle, meaning the first house is the neighbor of the last. 
+         * Adjacent houses have security system connected and it will automatically 
+         * contact the police if two adjacent houses were broken into on the same night. 
+         * 
+         * Given a list of non-negative integers representing the amount of money of each house, 
+         * determine the maximum amount of money you can rob tonight without alerting the police.
+         */
+        public int HouseRobberII(int[] nums)
+        {
+            if (nums == null || nums.Length == 0)
+            {
+                return 0;
+            }
+
+            if (nums.Length == 1)
+            {
+                return nums[0];
+            }
+
+            if (nums.Length == 2)
+            {
+                return Math.Max(nums[0], nums[1]);
+            }
+
+            int[] dp = new int[nums.Length - 1];
+            int[] dp2 = new int[nums.Length];
+
+            dp[0] = nums[0];
+            dp[1] = Math.Max(nums[0], nums[1]);
+            dp2[0] = 0;
+            dp2[1] = nums[1];
+
+            for (int i = 2; i < dp.Length; ++i)
+            {
+                dp[i] = Math.Max(nums[i] + dp[i - 2], dp[i - 1]);
+            }
+
+            for (int j = 2; j < dp2.Length; ++j)
+            {
+                dp2[j] = Math.Max(nums[j] + dp2[j - 2], dp2[j - 1]);
+            }
+
+            return Math.Max(dp[dp.Length - 1], dp2[dp2.Length - 1]);
+        }
+
         /* Given two strings text1 and text2, return the length of their longest common subsequence.
          * A subsequence of a string is a new string generated from the original string with 
          * some characters(can be none) deleted without changing the relative order of the remaining characters. 
