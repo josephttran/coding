@@ -347,6 +347,36 @@ namespace Code
             return longest.Count;
         }
 
+        /* A robot is located at the top-left corner of a m x n grid. 
+         * The robot can only move either down or right at any point in time. 
+         * The robot is trying to reach the bottom-right corner of the grid. 
+         * How many possible unique paths are there?
+         */
+        public int UniquePaths(int m, int n)
+        {
+            if (m == 1 || n == 1)
+            {
+                return 1;
+            }
+
+            int[][] matrix = new int[m][];
+
+            for (int i = 0; i < m; ++i)
+            {
+                matrix[i] = Enumerable.Repeat(1, n).ToArray();
+            }
+
+            for (int i = 1; i < m; ++i)
+            {
+                for (int j = 1; j < n; ++j)
+                {
+                    matrix[i][j] = matrix[i - 1][j] + matrix[i][j - 1];
+                }
+            }
+
+            return matrix[m - 1][n - 1];
+        }
+
         /* Given a non-empty string s and a dictionary wordDict containing a list of non-empty words, 
          * determine if s can be segmented into a space-separated sequence of one or more dictionary words.
          * 
