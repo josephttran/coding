@@ -95,6 +95,71 @@ namespace Code
             return dp[target];
         }
 
+        /* A message containing letters from A-Z is being encoded to numbers using the following mapping:
+         * 'A' -> 1, 'B' -> 2, ..., 'Z' -> 26
+         * 
+         * Given a non-empty string containing only digits, determine the total number of ways to decode it.
+         */
+        public int DecodeWays(string s)
+        {
+            if (s.Length == 0)
+            {
+                return 0;
+            }
+
+            if (s.Length == 1 && s[0] != '0')
+            {
+                return 1;
+            }
+
+            if (s[0] == '0' || s[0] > '2' && s[1] == '0')
+            {
+                return 0;
+            }
+
+            HashSet<string> set = new HashSet<string>() 
+            { 
+                "1", "2", "3", "4", "5", "6", "7", "8", "9", 
+                "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", 
+                "20", "21", "22", "23", "24", "25", "26"
+            };
+
+            int[] dp = new int[s.Length];
+            dp[0] = 1;
+
+            if (s[1] == '0' || !set.Contains(s.Substring(0, 2)))
+            {
+                dp[1] = 1;
+            }
+            else
+            {
+                dp[1] = 2;
+            }
+
+            for (int i = 2; i < s.Length; ++i)
+            {
+                if (s[i] == '0')
+                {
+                    if (s[i - 1] > '2' || s[i - 1] == '0')
+                    {
+                        return 0;
+                    }
+
+                    dp[i] = dp[i - 2];
+                }
+                else if (set.Contains(s.Substring(i - 1, 2)))
+                {
+                    dp[i] = dp[i - 1] + dp[i - 2];
+                }
+                else
+                {
+                    dp[i] = dp[i - 1];
+                }
+            }
+
+            return dp[dp.Length - 1];
+        }
+
         /* You are a professional robber planning to rob houses along a street. 
          * Each house has a certain amount of money stashed, 
          * the only constraint stopping you from robbing each of them is that adjacent houses have security system connected 
