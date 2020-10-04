@@ -8,6 +8,31 @@ namespace Code
 {
     public class DynamicProgramming
     {
+        /* Given an array of non-negative integers, you are initially positioned at the first index of the array. 
+         * Each element in the array represents your maximum jump length at that position. 
+         * Determine if you are able to reach the last index.
+         */
+        public bool CanJump(int[] nums)
+        {
+            bool[] dp = Enumerable.Repeat(false, nums.Length).ToArray();
+
+            dp[0] = true;
+
+            for (int i = 1; i < nums.Length; ++i)
+            {
+                for (int j = i - 1; j > -1; --j)
+                {
+                    if (dp[i - 1] == true && j + nums[j] >= i)
+                    {
+                        dp[i] = true;
+                        break;
+                    }
+                }
+            }
+
+            return dp[nums.Length - 1];
+        }
+
         /* You are climbing a stair case. It takes n steps to reach to the top.
          * Each time you can either climb 1 or 2 steps. 
          * In how many distinct ways can you climb to the top?
