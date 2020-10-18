@@ -39,6 +39,53 @@ namespace Code
             return s.Length - left;
         }
 
+        /* Given two strings s and t , write a function to determine if t is an anagram of s.
+         * The string contains only lowercase alphabets.
+         */
+        public bool IsAnagram(string s, string t)
+        {
+            if (s.Length != t.Length)
+            {
+                return false;
+            }
+
+            Dictionary<char, int> charCounter = new Dictionary<char, int>();
+
+            foreach (char c in s)
+            {
+                if (charCounter.TryGetValue(c, out int value))
+                {
+                    charCounter[c] = value + 1;
+                }
+                else
+                {
+                    charCounter.Add(c, 1);
+                }
+            }
+
+            foreach (char c in t)
+            {
+                if (charCounter.TryGetValue(c, out int value))
+                {
+                    charCounter[c] = value - 1;
+                }
+                else
+                {
+                    charCounter.Add(c, 1);
+                }
+            }
+
+            foreach (var kv in charCounter)
+            {
+                if (kv.Value != 0)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
         /* Given a string s, find the length of the longest substring without repeating characters.
          */
         public int LengthOfLongestSubstring(string s)
@@ -135,53 +182,6 @@ namespace Code
             }
 
             return ""; 
-        }
-
-        /* Given two strings s and t , write a function to determine if t is an anagram of s.
-         * The string contains only lowercase alphabets.
-         */
-        public bool IsAnagram(string s, string t)
-        {
-            if (s.Length != t.Length)
-            {
-                return false;
-            }
-
-            Dictionary<char, int> charCounter = new Dictionary<char, int>();
-
-            foreach (char c in s)
-            {
-                if(charCounter.TryGetValue(c, out int value))
-                {
-                    charCounter[c] = value + 1;
-                }
-                else
-                {
-                    charCounter.Add(c, 1);
-                }
-            }
-
-            foreach (char c in t)
-            {
-                if (charCounter.TryGetValue(c, out int value))
-                {
-                    charCounter[c] = value - 1;
-                }
-                else
-                {
-                    charCounter.Add(c, 1);
-                }
-            }
-
-            foreach (var kv in charCounter)
-            {
-                if (kv.Value != 0)
-                {
-                    return false;
-                }
-            }
-
-            return true;
         }
     }
 }
