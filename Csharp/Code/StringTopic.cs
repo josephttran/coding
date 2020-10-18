@@ -63,5 +63,78 @@ namespace Code
 
             return longest;
         }
+
+        /* Given a string S and a string T 
+         * Find the minimum window in S which will contain all the characters in T in complexity O(n).
+         */
+        public string MinWindowSubstring(string s, string t)
+        {
+            if (s.Length == 0 || t.Length == 0)
+            {
+                return "";
+            }
+
+            Dictionary<char, int> map = new Dictionary<char, int>();
+            int requiredLength = t.Length;
+            int substringBegin = 0;
+            int substringLength = int.MaxValue;
+            int begin = 0;
+            int end = 0;
+
+            foreach (char c in t)
+            {
+                if (map.ContainsKey(c))
+                {
+                    map[c] += 1;
+                }
+                else
+                {
+                    map.Add(c, 1);
+                }
+            }
+
+            while (end < s.Length)
+            {
+                if (map.ContainsKey(s[end]))
+                {
+                    map[s[end]]--;
+
+                    if (map[s[end]] >= 0)
+                    {
+                        requiredLength--;
+                    }
+                }
+
+                while (requiredLength == 0)
+                {
+                    if (end - begin < substringLength)
+                    {
+                        substringBegin = begin;
+                        substringLength = end - begin + 1;
+                    }
+
+                    if (map.ContainsKey(s[begin]))
+                    {
+                        map[s[begin]]++;
+
+                        if (map[s[begin]] > 0)
+                        {
+                            requiredLength++;
+                        }
+                    }
+
+                    begin++;
+                }
+
+                end++;
+            }
+
+            if (substringLength != int.MaxValue)
+            {
+                return s.Substring(substringBegin, substringLength);
+            }
+
+            return ""; 
+        }
     }
 }
