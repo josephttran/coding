@@ -14,7 +14,7 @@ namespace Code.Tests.StringTopicTests
         }
 
         [Test]
-        public void CharacterReplacementLongestRepeating_AllSubstringFromSDoesNotContainsAllLettersInT_ReturnEmpty()
+        public void MinWindowSubstring_AllSubstringFromSDoesNotContainsAllLettersInT_ReturnEmpty()
         {
             string s = "aevds";
             string t = "sdf";
@@ -27,7 +27,7 @@ namespace Code.Tests.StringTopicTests
 
         [TestCase("a", "a", "a")]
         [TestCase("ADOBECODEBANC", "ABC", "BANC")]
-        public void CharacterReplacementLongestRepeating_WhenReplaceCharacters_ReturnLongestRepeatSubstring(string s, string t, string expected)
+        public void MinWindowSubstring_SubstringFromSContainsAllLettersInT_ReturnMinSubstring(string s, string t, string expected)
         {
             string result = _stringTopic.MinWindowSubstring(s, t);
 
