@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Code
@@ -84,6 +86,44 @@ namespace Code
             }
 
             return true;
+        }
+
+        /* Given an array of strings strs, group the anagrams together. You can return the answer in any order.
+         * An Anagram is a word or phrase formed by rearranging the letters of a different word or phrase, 
+         * typically using all the original letters exactly once.
+         */
+        public IList<IList<string>> GroupAnagrams(string[] strs)
+        {
+            if (strs.Length == 1)
+            {
+                return new List<IList<string>>() { new List<string> { strs[0] } };
+            }
+
+            IList<IList<string>> output = new List<IList<string>>();
+            Dictionary<string, List<string>> map = new Dictionary<string, List<string>>();
+
+            foreach (string str in strs)
+            {
+                char[] chars = str.ToCharArray();
+                Array.Sort(chars);
+                string sortedStr = string.Join("", chars);
+
+                if (map.TryGetValue(sortedStr, out List<string> value))
+                {
+                    map[sortedStr].Add(str);
+                }
+                else
+                {
+                    map.Add(sortedStr, new List<string>() { str });
+                }
+            }
+
+            foreach (var kv in map)
+            {
+                output.Add(kv.Value.Select(l => l).OrderBy(item => item).ToList());
+            }
+
+            return output;
         }
 
         /* Given a string s, find the length of the longest substring without repeating characters.
