@@ -88,6 +88,39 @@ namespace Code
             return true;
         }
 
+        /* Given a string, determine if it is a palindrome, considering only alphanumeric characters and ignoring cases.
+         * Empty string is valid palindrome.
+         */
+        public bool IsPalindrome(string s)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            foreach (char c in s)
+            {
+                if (char.IsDigit(c))
+                {
+                    sb.Append(c);
+                }
+
+                if (char.IsLetter(c))
+                {
+                    sb.Append(char.ToLower(c));
+                }
+            }
+
+            string text = sb.ToString();
+
+            for (int i = 0; i < text.Length / 2; ++i)
+            {
+                if (text[i] != text[text.Length - 1 - i])
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
         /* Given a string s containing just the characters '(', ')', '{', '}', '[' and ']', determine if the input string is valid.
          * An input string is valid if:
          * 1. Open brackets must be closed by the same type of brackets.
