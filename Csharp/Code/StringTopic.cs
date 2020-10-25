@@ -88,6 +88,73 @@ namespace Code
             return true;
         }
 
+        /* Given a string s containing just the characters '(', ')', '{', '}', '[' and ']', determine if the input string is valid.
+         * An input string is valid if:
+         * 1. Open brackets must be closed by the same type of brackets.
+         * 2. Open brackets must be closed in the correct order.
+         */
+        public bool IsValidParentheses(string s)
+        {
+            if (s.Length == 1)
+            {
+                return false;
+            }
+
+            Stack stack = new Stack();
+
+            foreach (char c in s)
+            {
+                if (c == '[' || c == '{' || c == '(')
+                {
+                    stack.Push(c);
+                }
+                else if (stack.Count == 0) 
+                {
+                    return false;
+                }
+                else if (c == ']')
+                {
+                    if ((char) stack.Peek() == '[')
+                    {
+                        stack.Pop();
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                else if (c == '}')
+                {
+                    if ((char) stack.Peek() == '{')
+                    {
+                        stack.Pop();
+                    }
+                    else
+                    {
+                        return false;
+                    }
+
+                }
+                else if (c == ')')
+                {
+                    if ((char) stack.Peek() == '(')
+                    {
+                        stack.Pop();
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                else
+                {
+                    return false;
+                }
+            }
+
+            return stack.Count == 0;
+        }
+
         /* Given an array of strings strs, group the anagrams together. You can return the answer in any order.
          * An Anagram is a word or phrase formed by rearranging the letters of a different word or phrase, 
          * typically using all the original letters exactly once.
