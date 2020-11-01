@@ -251,6 +251,48 @@ namespace Code
             return longest;
         }
 
+        /* Given a string s, return the longest palindromic substring in s.
+         */
+        public string LongestPalindrome(string s)
+        {
+            if (s.Length == 1)
+            {
+                return s;
+            }
+
+            int start = 0;
+            int end = 0;
+
+            for (int i = s.Length; i >= 0; --i)
+            {
+                int l = i;
+                int r = i + 1;
+                while (l >= 0 && r < s.Length && s[l] == s[r])
+                {
+                    l--;
+                    r++;
+                }
+               
+                int l2 = i;
+                int r2 = i;
+                while (l2 >= 0 && r2 < s.Length && s[l2] == s[r2])
+                {
+                    l2--;
+                    r2++;
+                }
+
+                int len = Math.Max(r2 - l2 - 1, r - l - 1);
+
+                if (len > end - start)
+                {
+                    start = i - (len - 1) / 2;
+                    end = i + len / 2;
+                }
+            }
+
+            return s.Substring(start, end - start + 1);
+        }
+
         /* Given a string S and a string T 
          * Find the minimum window in S which will contain all the characters in T in complexity O(n).
          */
