@@ -9,32 +9,18 @@ namespace Code
     {
         public ListNode ReverseLinkedList(ListNode head)
         {
-            if (head == null)
-            {
-                return null;
-            }
-
-            if (head.next == null)
-            {
-                return head;
-            }
-
+            ListNode reverseList = null;
             ListNode current = head;
-            ListNode reverseList = new ListNode(current.val);
-            current = current.next;
 
-            while (current.next != null)
+            while (current != null)
             {
-                ListNode temp = new ListNode(current.val);
-                temp.next = reverseList;
-                reverseList = temp;
-                current = current.next;
+                ListNode next = current.next;
+                current.next = reverseList;
+                reverseList = current;
+                current = next;
             }
 
-            ListNode last = new ListNode(current.val);
-            last.next = reverseList;
-
-            return last;
+            return reverseList;
         }
     }
 }
