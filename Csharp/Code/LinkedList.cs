@@ -113,6 +113,42 @@ namespace Code
             return sortedListHead;
         }
 
+        /*Given the head of a linked list, remove the nth node from the end of the list and return its head.
+         * 1 <= number of nodes <= 30
+         * 0 <= Node.val <= 100
+         * 1 <= n <= number of nodes
+         */
+        public ListNode RemoveNthFromEnd(ListNode head, int n)
+        {
+            ListNode current = head;
+            Dictionary<int, ListNode> positionNodePair = new Dictionary<int, ListNode>();
+            
+            int i = 0;
+            while (current != null)
+            {
+                positionNodePair.Add(i, current);
+                current = current.next;
+                i++;
+            }
+
+            int count = positionNodePair.Count;
+
+            if (count == n)
+            {
+                return head.next;
+            }
+
+            current = positionNodePair[count - 1 - n];
+            current.next = null;
+
+            if (n > 1)
+            {
+                current.next = positionNodePair[count - 1 - n + 2];
+            }
+
+            return head;
+        }
+
         public ListNode ReverseLinkedList(ListNode head)
         {
             ListNode reverseList = null;
