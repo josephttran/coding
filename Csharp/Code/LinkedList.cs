@@ -149,6 +149,60 @@ namespace Code
             return head;
         }
 
+        /* Given a singly linked list L: L0→L1→…→Ln-1→Ln,
+         * reorder it to: L0→Ln→L1→Ln-1→L2→Ln-2→…
+         * You may not modify the values in the list's nodes, only nodes itself may be changed.
+         */
+        public void ReorderList(ListNode head)
+        {
+            if (head != null && head.next != null && head.next.next != null)
+            {
+                Dictionary<int, ListNode> positionNodePair = new Dictionary<int, ListNode>();
+                ListNode headPointer = head;
+
+                ListNode current = head;
+                ListNode node = null;
+                ListNode next = null;
+
+                int i = 0;
+                while (current != null)
+                {
+                    next = current.next;
+                    node = current;
+                    node.next = null;
+                    positionNodePair.Add(i, node);
+                    current = next;
+                    i++;
+                }
+
+                current = positionNodePair[0];
+
+                int stop = 0;
+
+                if (positionNodePair.Count < 5)
+                {
+                    stop = 1;
+                }
+                else
+                {
+                    stop = (positionNodePair.Count - 1) / 2;
+                }
+
+                for (int begin = 0, end = positionNodePair.Count - 1; begin < stop; ++begin, --end)
+                {
+                    current.next = positionNodePair[end];
+                    current = current.next;
+                    current.next = positionNodePair[begin + 1];
+                    current = current.next;
+                }
+
+                if ((positionNodePair.Count - 1) % 2 == 1)
+                {
+                    current.next = positionNodePair[positionNodePair.Count / 2];
+                }
+            }    
+        }
+
         public ListNode ReverseLinkedList(ListNode head)
         {
             ListNode reverseList = null;
