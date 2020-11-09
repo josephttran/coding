@@ -46,6 +46,73 @@ namespace Code
             return false;
         }
 
+
+        /* Merge two sorted linked lists and return it as a new sorted list. 
+         * The new list should be made by splicing together the nodes of the first two lists.
+         */
+        public ListNode MergeTwoSortedLists(ListNode l1, ListNode l2)
+        {
+            ListNode sortedListHead = null;
+            ListNode current = null;
+            ListNode insertNode = null;
+            ListNode nextNode = null;
+
+            while (l1 != null && l2 != null)
+            {
+                if (l1.val <= l2.val)
+                {
+                    nextNode = l1.next;
+                    insertNode = l1;
+                    l1 = nextNode;
+                }
+                else
+                {
+                    nextNode = l2.next;
+                    insertNode = l2;
+                    l2 = nextNode;
+                }
+
+                insertNode.next = null;
+
+                if (current == null)
+                {
+                    current = insertNode;
+                    sortedListHead = current;
+                }
+                else
+                {
+                    current.next = insertNode;
+                    current = current.next;
+                }
+            }
+
+            if (l1 != null)
+            {
+                if (sortedListHead == null)
+                {
+                    return l1;
+                }
+                else
+                {
+                    current.next = l1;
+                }
+            }
+
+            if (l2 != null)
+            {
+                if (sortedListHead == null)
+                {
+                    return l2;
+                }
+                else
+                {
+                    current.next = l2;
+                }            
+            }
+
+            return sortedListHead;
+        }
+
         public ListNode ReverseLinkedList(ListNode head)
         {
             ListNode reverseList = null;
