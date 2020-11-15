@@ -53,40 +53,29 @@ namespace Code
          */
         public ListNode MergeKLists(ListNode[] lists)
         {
-            bool isEmpty = lists.All(listNode => listNode == null);
-
-            if (lists.Length == 0 || isEmpty)
+            if (lists.Length == 0)
             {
                 return null;
             }
 
             if (lists.Length == 1)
             {
-                if (lists[0] == null)
-                {
-                    return null;
-                }
-                else
-                {
-                    return lists[0];
-                }
+                return lists[0];
             }
 
-            ListNode sorted = null;
+            Queue<ListNode> queue = new Queue<ListNode>();
 
-            if (lists.Length % 2 == 1)
+            for (int i = 0; i < lists.Length; ++i)
             {
-                sorted = lists[lists.Length - 1];
+                queue.Enqueue(lists[i]);
             }
 
-            for (int i = 0; i < lists.Length - 1; i += 2)
+            do
             {
-                ListNode mergeTwo = MergeTwo(lists[i], lists[i + 1]);
+                queue.Enqueue(MergeTwo(queue.Dequeue(), queue.Dequeue()));
+            } while (queue.Count > 1);
 
-                sorted = MergeTwo(sorted, mergeTwo);
-            }
-
-            return sorted;
+            return queue.Dequeue();
 
             ListNode MergeTwo(ListNode l1, ListNode l2)
             {
