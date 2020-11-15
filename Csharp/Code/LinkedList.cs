@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Code.Models;
 
@@ -46,6 +47,71 @@ namespace Code
             return false;
         }
 
+        /* You are given an array of k linked-lists lists, each linked-list is sorted in ascending order. 
+         * Merge all the linked-lists into one sorted linked-list and return it.
+         * k == lists.length
+         */
+        public ListNode MergeKLists(ListNode[] lists)
+        {
+            bool isEmpty = lists.All(listNode => listNode == null);
+
+            if (lists.Length == 0 || isEmpty)
+            {
+                return null;
+            }
+
+            if (lists.Length == 1)
+            {
+                if (lists[0] == null)
+                {
+                    return null;
+                }
+                else
+                {
+                    return lists[0];
+                }
+            }
+
+            ListNode sorted = null;
+
+            if (lists.Length % 2 == 1)
+            {
+                sorted = lists[lists.Length - 1];
+            }
+
+            for (int i = 0; i < lists.Length - 1; i += 2)
+            {
+                ListNode mergeTwo = MergeTwo(lists[i], lists[i + 1]);
+
+                sorted = MergeTwo(sorted, mergeTwo);
+            }
+
+            return sorted;
+
+            ListNode MergeTwo(ListNode l1, ListNode l2)
+            {
+                if (l1 == null)
+                {
+                    return l2;
+                }
+
+                if (l2 == null)
+                {
+                    return l1;
+                }
+
+                if (l1.val < l2.val)
+                {
+                    l1.next = MergeTwo(l1.next, l2);
+                    return l1;
+                }
+                else
+                {
+                    l2.next = MergeTwo(l1, l2.next);
+                    return l2;
+                }
+            }
+        }
 
         /* Merge two sorted linked lists and return it as a new sorted list. 
          * The new list should be made by splicing together the nodes of the first two lists.
