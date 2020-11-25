@@ -7,6 +7,52 @@ namespace Code
 {
     public class Matrix
     {
+        /* You are given an n x n 2D matrix representing an image, rotate the image by 90 degrees (clockwise). 
+         * You have to rotate the image in-place, which means you have to modify the input 2D matrix directly. 
+         * DO NOT allocate another 2D matrix and do the rotation.
+         * matrix.length == n
+         */
+        public void RotateImage(int[][] matrix)
+        {
+            int left = 0;
+            int right = matrix.Length - 1;
+            int top = 0;
+            int bottom = matrix.Length - 1;
+
+            while (top < bottom)
+            {
+                int l = left;
+                int r = right;
+                int t = top;
+                int b = bottom;
+
+                int copyLen = r - l;
+                int[] temp = new int[copyLen];
+                Array.Copy(matrix[top], l, temp, 0, copyLen);
+
+                while (l < right)
+                {
+                    matrix[top][l] = matrix[b][left];
+                    matrix[b][left] = matrix[bottom][r];
+                    matrix[bottom][r] = matrix[t][right];
+
+                    l++;
+                    r--;
+                    b--;
+                    t++;
+                }
+
+                for (int i = top, tempIndex = 0; i < bottom; ++i, ++tempIndex)
+                {
+                    matrix[i][right] = temp[tempIndex];
+                }
+
+                left++;
+                right--;
+                top++;
+                bottom--;
+            }        
+        }
 
         /* Given an m x n matrix. If an element is 0, set its entire row and column to 0.
          */
