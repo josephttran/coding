@@ -65,5 +65,87 @@ namespace Code
                 }
             }
         }
+
+        /* Given an m x n matrix, return all elements of the matrix in spiral order.
+         */
+        public IList<int> SpiralOrder(int[][] matrix)
+        {
+            IList<int> spiralList = new List<int>();
+            int top = 0;
+            int bottom = matrix.Length - 1;
+            int left = 0;
+            int right = matrix[0].Length - 1;
+
+            while (top < bottom && left < right)
+            {
+                int l = left;
+                int r = right;
+
+                // left to right
+                while (l <= r)
+                {
+                    spiralList.Add(matrix[top][l]);
+                    l++;
+                }
+
+                // top to bottom
+                int t = top + 1;
+                int b = bottom;
+                while (t <= b)
+                {
+                    spiralList.Add(matrix[t][right]);
+                    t++;
+                }
+
+                // right to left
+                l = left;
+                r = right - 1;
+
+                while (l <= r)
+                {
+                    spiralList.Add(matrix[bottom][r]);
+                    r--;
+                }
+
+                // bottom to top
+                t = top + 1;
+                b = bottom - 1;
+                while (t <= b)
+                {
+                    spiralList.Add(matrix[b][left]);
+                    b--;
+                }
+
+                top++;
+                bottom--;
+                left++;
+                right--;
+            }
+
+            if (left <= right && top == bottom)
+            {
+                while (left < right)
+                {
+                    spiralList.Add(matrix[top][left]);
+                    left++;
+                }
+            }
+
+            if (left == right && top <= bottom)
+            {
+                while (top < bottom)
+                {
+                    spiralList.Add(matrix[top][left]);
+                    top++;
+                }
+            }
+
+            if (left == right && top == bottom)
+            {
+                spiralList.Add(matrix[top][left]);
+            }
+
+            return spiralList;
+        }
     }
 }
