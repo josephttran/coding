@@ -7,6 +7,20 @@ namespace Code
 {
     public class Tree
     {
+        public TreeNode InvertTree(TreeNode root)
+        {
+            if (root == null)
+            {
+                return null;
+            }
+
+            TreeNode temp = InvertTree(root.left);
+            root.left = InvertTree(root.right);
+            root.right = temp;
+
+            return root;
+        }
+
         /* Given two binary trees, write a function to check if they are the same or not.
          * Two binary trees are considered the same 
          * if they are structurally identical and the nodes have the same value.
