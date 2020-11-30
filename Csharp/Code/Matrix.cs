@@ -193,5 +193,65 @@ namespace Code
 
             return spiralList;
         }
+
+        /* Given an m x n board and a word, find if the word exists in the grid.
+         * The word can be constructed from letters of sequentially adjacent cells, 
+         * where "adjacent" cells are horizontally or vertically neighboring. 
+         * The same letter cell may not be used more than once.
+         */
+        public bool WordSearch(char[][] board, string word)
+        {
+            if (board == null || board[0].Length == 0)
+            {
+                return false;
+            }
+
+            int m = board.Length;
+            int n = board[0].Length;
+
+            for (int i = 0; i < m; ++i)
+            {
+                for (int j = 0; j < n; ++j)
+                {
+                    // If first letter match then find the rest in order
+                    if (board[i][j] == word[0])
+                    {
+                        if (match(board, i, j, 0, word))
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+
+            return false;
+
+            bool match(char[][] b, int i, int j, int position, string w)
+            {
+                if (position == w.Length)
+                {
+                    return true;
+                }
+
+                // Out of bound or character not at right position in the word
+                if (i < 0 || j < 0 || i > b.Length - 1 || j > b[0].Length - 1 || b[i][j] != word[position])
+                {
+                    return false;
+                }
+
+                // Mark cell as visited
+                char temp = b[i][j];
+                b[i][j] = '-';
+
+                bool valid = match(b, i + 1, j, position + 1, w) ||
+                    match(b, i - 1, j, position + 1, w) ||
+                    match(b, i, j + 1, position + 1, w) ||
+                    match(b, i, j - 1, position + 1, w);
+
+                b[i][j] = temp;
+
+                return valid;;
+            }
+        }
     }
 }
