@@ -61,6 +61,35 @@ namespace Code
 
             return 1 + Math.Max(maxLeft, maxRight);
         }
+
+        /* Given a non-empty binary tree, find the maximum path sum.
+         * For this problem, a path is defined as any node sequence 
+         * from some starting node to any node in the tree along the parent-child connections. 
+         * The path must contain at least one node and does not need to go through the root.
+         */
+        public int MaxPathSum(TreeNode root)
+        {
+            int max = int.MinValue;
+
+            MaxSum(root);
+
+            return max;
+
+            int MaxSum(TreeNode node)
+            {
+                if(node == null)
+                {
+                    return 0;
+                }
+
+                int left = Math.Max(0, MaxSum(node.left));
+                int right = Math.Max(0, MaxSum(node.right));
+
+                max = Math.Max(max, node.val + left + right);
+
+                return node.val + Math.Max(left, right);
+            }
+        }
     }
 }
 
