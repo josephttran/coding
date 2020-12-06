@@ -45,6 +45,52 @@ namespace Code
             return IsSameTree(p.left, q.left) && IsSameTree(p.right, q.right);
         }
 
+        /* Given a binary tree, return the level order traversal of its nodes' values. 
+         * (ie, from left to right, level by level).
+         */
+        public IList<IList<int>> LevelOrder(TreeNode root)
+        {
+            IList<IList<int>> levelOrderList = new List<IList<int>>();
+            IList<int> list = new List<int>();
+            int height = GetTreeHeight(root);
+
+            for (int i = 0; i < height; ++i)
+            {
+                GivenTreeLevel(root, i);
+                levelOrderList.Add(list);
+                list = new List<int>();
+            }
+
+            return levelOrderList;
+
+            int GetTreeHeight(TreeNode node)
+            {
+                if (node == null)
+                {
+                    return 0;
+                }
+
+                return 1 + Math.Max(GetTreeHeight(node.left), GetTreeHeight(node.right));
+            }
+
+            void GivenTreeLevel(TreeNode node, int level)
+            {
+                if (node == null)
+                {
+                    return;
+                }
+                else if (level == 0)
+                {
+                    list.Add(node.val);
+                }
+                else
+                {
+                    GivenTreeLevel(node.left, level - 1);
+                    GivenTreeLevel(node.right, level - 1);
+                }
+            }
+        }
+
         /* Given the root of a binary tree, return its maximum depth.
          * A binary tree's maximum depth is the number of nodes along the longest path 
          * from the root node down to the farthest leaf node.
