@@ -46,6 +46,30 @@ namespace Code
             return IsSameTree(p.left, q.left) && IsSameTree(p.right, q.right);
         }
 
+        /* Given two non-empty binary trees s and t, 
+         * check whether tree t has exactly the same structure and node values with a subtree of s. 
+         * A subtree of s is a tree consists of a node in s and all of this node's descendants. 
+         * The tree s could also be considered as a subtree of itself.
+         */
+        public bool IsSubtree(TreeNode s, TreeNode t)
+        {
+            string sString = serializePreorder(s);
+            string tString = serializePreorder(t);
+            Console.WriteLine(sString);
+            Console.WriteLine(tString);
+            return sString.Contains(tString);
+
+            string serializePreorder(TreeNode root)
+            {
+                if (root == null)
+                {
+                    return "null";
+                }
+
+                return "#" + root.val +  serializePreorder(root.left) + serializePreorder(root.right);
+            }
+        }
+
         /* Given a binary tree, return the level order traversal of its nodes' values. 
          * (ie, from left to right, level by level).
          */
