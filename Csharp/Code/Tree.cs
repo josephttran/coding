@@ -1,6 +1,7 @@
 ﻿using Code.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Code
@@ -136,6 +137,103 @@ namespace Code
                 return node.val + Math.Max(left, right);
             }
         }
+
+        #region Codec
+        /* Design an algorithm to serialize and deserialize a binary tree. 
+         * There is no restriction on how your serialization/deserialization algorithm should work. 
+         * You just need to ensure that a binary tree can be serialized to a string 
+         * and this string can be deserialized to the original tree structure.
+         */
+        // Encodes a tree to a single string.
+        public string Serialize(TreeNode root)
+        {
+            if (root == null)
+            {
+                return "null#";
+            }
+
+            string serializeTree = "";
+            string separator = "#";
+            Stack<TreeNode> stack = new Stack<TreeNode>();
+            stack.Push(root);
+
+            while (stack.Count > 0)
+            {
+                TreeNode node = stack.Pop();
+
+                if (node == null)
+                {
+                    serializeTree = serializeTree + "null" + separator;
+                }
+                else
+                {
+                    serializeTree = serializeTree + node.val + separator;
+                    stack.Push(node.right);
+                    stack.Push(node.left);
+                }
+            }
+
+            return serializeTree;
+        }
+
+        // Decodes your encoded data to tree.
+        public TreeNode Deserialize(string data)
+        {
+            if (data == "null#")
+            {
+                return null;
+            }
+
+            char separator = '#';
+            string[] nums = data.Remove(data.Length - 1).Split(separator);
+            Queue<string> dataQueue = new Queue<string>(nums);
+
+            string val = dataQueue.Dequeue();
+            TreeNode root = new TreeNode(int.Parse(val));
+            Stack<TreeNode> stack = new Stack<TreeNode>();
+            stack.Push(root);
+            bool left = true;
+            TreeNode node;
+
+            while (dataQueue.Count > 0)
+            {
+                val = dataQueue.Dequeue();
+
+                if (val == "null")
+                {
+                    node = null;
+                }
+                else
+                {
+                    node = new TreeNode(int.Parse(val));
+                }
+
+                if (left)
+                {
+                    stack.Peek().left = node;
+                    if (node == null)
+                    {
+                        left = false;
+                    }
+                }
+                else
+                {
+                    stack.Pop().right = node;
+                    if(node != null)
+                    {
+                        left = true;
+                    }
+                }
+
+                if (node != null)
+                {
+                    stack.Push(node);
+                }
+            }
+
+            return root;
+        }
+        #endregion
     }
 }
 
