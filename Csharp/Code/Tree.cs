@@ -8,6 +8,46 @@ namespace Code
 {
     public class Tree
     {
+        /* Given preorder and inorder traversal of a tree, construct the binary tree.
+         * You may assume that duplicates do not exist in the tree.
+         */
+        public TreeNode BuildTree(int[] preorder, int[] inorder)
+        {
+            if (preorder.Length == 0)
+            {
+                return null;
+            }
+
+            Stack<TreeNode> stack = new Stack<TreeNode>();
+            TreeNode root = new TreeNode(preorder[0]);
+            stack.Push(root);
+            int inorderIndex = 0;
+
+            for (int i = 1; i < preorder.Length; ++i)
+            {
+                TreeNode currentNode = stack.Peek();
+
+                if (currentNode.val != inorder[inorderIndex])
+                {
+                    currentNode.left = new TreeNode(preorder[i]);
+                    stack.Push(currentNode.left);
+                }
+                else
+                {
+                    while (stack.Count > 0 && stack.Peek().val == inorder[inorderIndex])
+                    {
+                        currentNode = stack.Pop();
+                        inorderIndex++;
+                    }
+
+                    currentNode.right = new TreeNode(preorder[i]);
+                    stack.Push(currentNode.right);
+                }
+            }
+
+            return root;
+        }
+
         public TreeNode InvertTree(TreeNode root)
         {
             if (root == null)
