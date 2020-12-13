@@ -16,6 +16,18 @@ namespace Code.Tests.TreeTests
         }
 
         [Test]
+        public void BuildTree_ShouldBeNull()
+        {
+            int[] preorder = { };
+            int[] inorder = { };
+            TreeNode expectedTree = null;
+
+            TreeNode result = _tree.BuildTree(preorder, inorder);
+
+            Assert.IsTrue(IsSameTree(expectedTree, result));
+        }
+
+        [Test]
         public void BuildTree_ShouldBuildTree()
         {
             int[] preorder = { 3, 9, 20, 15, 7 };
