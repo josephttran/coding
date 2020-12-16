@@ -196,6 +196,39 @@ namespace Code
             }
         }
 
+        /* Given a binary search tree, write a function kthSmallest to find the kth smallest element in it.
+         * 
+         * Number of elements of the BST is between 1 to 10^4
+         * 1 ≤ k ≤ BST's total elements
+         */
+        public int KthSmallest(TreeNode root, int k)
+        {
+            Stack<TreeNode> stack = new Stack<TreeNode>();
+            TreeNode currNode = root;
+            int count = 0;
+
+            while (stack.Count > 0 || currNode != null)
+            {
+                while (currNode != null)
+                {
+                    stack.Push(currNode);
+                    currNode = currNode.left;
+                }
+
+                currNode = stack.Pop();
+                count++;
+
+                if (count == k)
+                {
+                    return currNode.val;
+                }
+
+                currNode = currNode.right;
+            }
+
+            return Int32.MinValue;
+        }
+
         /* Given the root of a binary tree, return its maximum depth.
          * A binary tree's maximum depth is the number of nodes along the longest path 
          * from the root node down to the farthest leaf node.
