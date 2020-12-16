@@ -229,6 +229,40 @@ namespace Code
             return Int32.MinValue;
         }
 
+        /* Given a binary search tree (BST), find the lowest common ancestor (LCA) of two given nodes in the BST.
+         * Allow a node to be a descendant of itself
+         * The number of nodes in the tree is in the range [2, 105].
+         * All Node.val are unique
+         * p != q
+         * p and q will exist in the BST.
+         */
+        public TreeNode LowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q)
+        {
+            int pVal = p.val;
+            int qVal = q.val;
+            TreeNode currentNode = root;
+
+            while (currentNode != null)
+            {
+                int currentVal = currentNode.val;
+
+                if (currentVal > pVal && currentVal > qVal)
+                {
+                    currentNode = currentNode.left;
+                }
+                else if (currentVal < pVal && currentVal < qVal)
+                {
+                    currentNode = currentNode.right;
+                } 
+                else
+                {
+                    return currentNode;
+                }
+            }
+
+            return null;
+        }
+
         /* Given the root of a binary tree, return its maximum depth.
          * A binary tree's maximum depth is the number of nodes along the longest path 
          * from the root node down to the farthest leaf node.
