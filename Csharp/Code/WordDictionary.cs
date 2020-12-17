@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace Code
 {
@@ -8,29 +6,26 @@ namespace Code
      */
     public class WordDictionary
     {
-        Dictionary<int, List<string>> lengthWords;
+        Dictionary<int, HashSet<string>> lengthWords;
 
         public WordDictionary()
         {
-            lengthWords = new Dictionary<int, List<string>>();
+            lengthWords = new Dictionary<int, HashSet<string>>();
         }
 
         public void AddWord(string word)
         {
             int wordLength = word.Length;
 
-            if (lengthWords.TryGetValue(wordLength, out List<string> wordList))
+            if (lengthWords.TryGetValue(wordLength, out _))
             {
-                if (!wordList.Contains(word))
-                {
-                    lengthWords[wordLength].Add(word);
-                }
+                lengthWords[wordLength].Add(word);
             }
             else
             {
-                List<string> list = new List<string>();
-                list.Add(word);
-                lengthWords.Add(wordLength, list);
+                HashSet<string> set = new HashSet<string>();
+                set.Add(word);
+                lengthWords.Add(wordLength, set);
             }
         }
 
@@ -38,13 +33,13 @@ namespace Code
         {
             int wordLength = word.Length;
 
-            if (lengthWords.TryGetValue(wordLength, out List<string> wordList))
+            if (lengthWords.TryGetValue(wordLength, out _))
             {
-                foreach (string str in wordList)
+                foreach (string str in lengthWords[wordLength])
                 {
                     bool same = true;
 
-                    for (int i = 0; i < word.Length; i++)
+                    for (int i = 0; i < wordLength; i++)
                     {
                         if (word[i] == '.' || word[i] == str[i])
                         {
@@ -52,6 +47,7 @@ namespace Code
                         }
 
                         same = false;
+                        break;
                     }
 
                     if (same)
