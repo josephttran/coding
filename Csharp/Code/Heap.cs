@@ -1,4 +1,5 @@
 ﻿using Code.Models;
+using System.Collections.Generic;
 
 namespace Code
 {
@@ -45,6 +46,50 @@ namespace Code
             }
 
             return result;
+        }
+
+        /* Given a non-empty array of integers, return the k most frequent elements.
+         * k is always valid 
+         * 1 ≤ k ≤ number of unique elements
+         */
+        public int[] TopKFrequent(int[] nums, int k)
+        {
+            if (k == nums.Length)
+            {
+                return nums;
+            }
+
+            Dictionary<int, int> frequencyDictionary = new Dictionary<int, int>();
+            MinHeap heap = new MinHeap(k + 1);
+            int[] most = new int[k];
+
+            for (int i = 0; i < nums.Length; i++)
+            {
+                if (!frequencyDictionary.TryGetValue(nums[i], out _))
+                {
+                    frequencyDictionary.Add(nums[i], 0);
+                }
+
+                frequencyDictionary[nums[i]]++;
+            }
+
+            foreach (var keyValue in frequencyDictionary)
+            {
+                heap.Insert(new MinHeapNode(keyValue.Key, keyValue.Value));
+                
+                if (heap.GetSize() > k)
+                {
+                    heap.RemoveRoot();
+                }
+            }
+
+            for (int i = 0; i < most.Length; i++)
+            {
+                MinHeapNode minHeapNode = heap.RemoveRoot();
+                most[i] = minHeapNode.KIndex;
+            }
+
+            return most;
         }
     }
 }
