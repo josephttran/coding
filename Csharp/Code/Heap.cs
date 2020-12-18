@@ -5,6 +5,48 @@ namespace Code
 {
     public class Heap
     {
+        #region Median finder
+        /* Design a data structure that supports the following two operations:
+         * void addNum(int num) - Add an integer number from the data stream to the data structure.
+         * double findMedian() - Return the median of all elements so far.
+         */
+        public class MedianFinder
+        {
+            IntMaxHeap maxHeapHalfLower;
+            IntMinHeap minHeapHalfUpper;
+
+            public MedianFinder()
+            {
+                maxHeapHalfLower = new IntMaxHeap();
+                minHeapHalfUpper = new IntMinHeap();
+            }
+
+            public void AddNum(int num)
+            {
+                maxHeapHalfLower.Insert(num);
+                minHeapHalfUpper.Insert(maxHeapHalfLower.PeekTop());
+                maxHeapHalfLower.RemoveRoot();
+
+
+                if (maxHeapHalfLower.GetSize() < minHeapHalfUpper.GetSize())
+                {
+                    maxHeapHalfLower.Insert(minHeapHalfUpper.PeekTop());
+                    minHeapHalfUpper.RemoveRoot();
+                }
+            }
+
+            public double FindMedian()
+            {
+                if(minHeapHalfUpper.GetSize() < maxHeapHalfLower.GetSize())
+                {
+                    return maxHeapHalfLower.PeekTop();
+                }
+
+                return (minHeapHalfUpper.PeekTop() + maxHeapHalfLower.PeekTop()) * 0.5;
+            }
+        }
+        #endregion
+
         public ListNode MergeKLists(ListNode[] lists)
         {
             MinHeap heap = new MinHeap(lists.Length);
