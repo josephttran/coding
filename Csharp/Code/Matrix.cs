@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Code.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -192,6 +193,87 @@ namespace Code
             }
 
             return spiralList;
+        }
+
+        /* Given an m x n board of characters and a list of strings words, return all words on the board.
+         * Each word must be constructed from letters of sequentially adjacent cells, 
+         * where adjacent cells are horizontally or vertically neighboring. 
+         * The same letter cell may not be used more than once in a word.
+         */
+        public IList<string> WordSearchII(char[][] board, string[] words)
+        {
+            IList<string> result = new List<string>();
+            TrieNodeWord trie = new TrieNodeWord();
+
+            for (int i = 0; i < words.Length; i++)
+            {
+                InsertWord(trie, words[i]);
+            }
+
+            for (int i = 0; i < board.Length; i++)
+            {
+                TrieNodeWord root = trie;
+
+                for (int j = 0; j < board[i].Length; j++)
+                {
+                    dfs(board, i, j, root, result);
+                }
+            }
+
+            return result;
+
+            void dfs(char[][] b, int i, int j, TrieNodeWord trieNode, IList<string> res)
+            {
+                // Base
+                if (trieNode.Word != null)
+                {
+                    res.Add(trieNode.Word);
+                    trieNode.Word = null;
+                }
+
+                // Out of Bound
+                if (i < 0 || i > b.Length - 1 || j < 0 || j > b[i].Length - 1)
+                {
+                    return;
+                }
+
+                char c = b[i][j];
+
+                // Already visited
+                if (c == '#' || trieNode.Children[c - 'a'] == null)
+                {
+                    return;
+                }
+
+                trieNode = trieNode.Children[c - 'a'];
+                b[i][j] = '#';
+
+                dfs(b, i + 1, j, trieNode, res);
+                dfs(b, i - 1, j, trieNode, res);
+                dfs(b, i, j + 1, trieNode, res);
+                dfs(b, i, j - 1, trieNode, res);
+
+                b[i][j] = c;
+            }
+
+            void InsertWord(TrieNodeWord node, string word)
+            {
+                TrieNodeWord currentNode = node;
+
+                for (int i = 0; i < word.Length; i++)
+                {
+                    int index = word[i] - 'a';
+
+                    if (currentNode.Children[index] == null)
+                    {
+                        currentNode.Children[index] = new TrieNodeWord();
+                    }
+
+                    currentNode = currentNode.Children[index];
+                }
+
+                currentNode.Word = word;
+            }
         }
 
         /* Given an m x n board and a word, find if the word exists in the grid.
