@@ -6,6 +6,50 @@ namespace Code
 {
     public class Interval
     {
+        /* Given a collection of intervals, find the minimum number of intervals 
+         * you need to remove to make the rest of the intervals non-overlapping.
+         * 
+         * You may assume the interval's end point is always bigger than its start point
+         * Intervals like [1,2] and [2,3] have borders "touching" but they don't overlap each other.
+         */
+        public int EraseOverlapIntervals(int[][] intervals)
+        {
+            Array.Sort(intervals, (a, b) =>
+            {
+                return a[0].CompareTo(b[0]);
+            });
+
+            if (intervals.Length < 2)
+            {
+                return 0;
+            }
+
+            int count = 0;
+            int prevStart = intervals[0][0];
+            int prevEnd = intervals[0][1];
+
+            for (int i = 1; i < intervals.Length; i++)
+            {
+                if (prevEnd > intervals[i][0])
+                {
+                    count++;
+                    
+                    if (prevEnd > intervals[i][1])
+                    {
+                        prevEnd = intervals[i][1];
+                    }
+                }
+                else
+                {
+                    prevStart = intervals[i][0];
+                    prevEnd = intervals[i][1];
+                }
+
+            }
+
+            return count;
+        }
+
         /* Given a set of non-overlapping intervals, insert a new interval into the intervals (merge if necessary).
          * You may assume that the intervals were initially sorted according to their start times.
          */
