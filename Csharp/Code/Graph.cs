@@ -7,6 +7,55 @@ namespace Code
 {
     public class Graph
     {
+        /* There are a total of numCourses courses you have to take, labeled from 0 to numCourses - 1.
+         * Some courses may have prerequisites, for example to take course 0 you have to first take course 1, which is expressed as a pair: [0,1]
+         * Given the total number of courses and a list of prerequisite pairs, is it possible for you to finish all courses?
+         * 
+         * The input prerequisites is a graph represented by a list of edges, not adjacency matrices.
+         */
+        public bool CanFinishCourses(int numCourses, int[][] prerequisites)
+        {
+            int[] indegree = new int[numCourses];
+
+            for (int i = 0; i < prerequisites.Length; i++)
+            {
+                indegree[prerequisites[i][0]]++;
+            }
+
+            Queue<int> queue = new Queue<int>();
+
+            for (int i = 0; i < numCourses; i++)
+            {
+                if (indegree[i] == 0)
+                {
+                    queue.Enqueue(i);
+                }
+            }
+
+            int numNonePrerequisite = queue.Count;
+
+            while(queue.Count > 0)
+            {
+                int num = queue.Dequeue();
+
+                for (int i = 0; i < prerequisites.Length; i++)
+                {
+                    if (prerequisites[i][1] == num)
+                    {
+                        indegree[prerequisites[i][0]]--;
+
+                        if(indegree[prerequisites[i][0]] == 0)
+                        {
+                            numNonePrerequisite++;
+                            queue.Enqueue(prerequisites[i][0]);
+                        }
+                    }
+                }
+            }
+
+            return numNonePrerequisite == numCourses;
+        }
+
         /* Given a reference of a node in a connected undirected graph.
          * Return a deep copy (clone) of the graph.
          * Each node in the graph contains a val (int) and a list (List[Node]) of its neighbors.
