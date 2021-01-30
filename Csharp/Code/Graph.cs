@@ -1,5 +1,6 @@
 ﻿using Code.Models;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
@@ -107,6 +108,67 @@ namespace Code
             }
 
             return cloneNode[0];
+        }
+
+        /* Given an m x n matrix of non-negative integers representing the height of each unit cell in a continent, 
+         * the "Pacific ocean" touches the left and top edges of the matrix and the "Atlantic ocean" touches the right and bottom edges.
+         * Water can only flow in four directions (up, down, left, or right) from a cell to another one with height equal or lower.
+         * 
+         * Find the list of grid coordinates where water can flow to both the Pacific and Atlantic ocean.
+         */
+        public IList<IList<int>> PacificAtlantic(int[][] matrix)
+        {
+            if (matrix == null || matrix.Length == 0)
+            {
+                return  new List<IList<int>>();
+            }
+
+            IList<IList<int>> list = new List<IList<int>>();
+            int m = matrix.Length;
+            int n = matrix[0].Length;
+
+            bool[,] pacific = new bool[m, n];
+            bool[,] atlantic = new bool[m, n];
+
+            for (int row = 0; row < m; row++)
+            {
+                dfs(matrix, row, 0, matrix[row][0], pacific);
+                dfs(matrix, row, n - 1, matrix[row][n - 1], atlantic);
+            }
+
+            for (int col = 0; col < n; col++)
+            {
+                dfs(matrix, 0, col, matrix[0][col], pacific);
+                dfs(matrix, m - 1, col, matrix[m - 1][col], atlantic);
+            }
+
+            for (int i = 0; i < m; i++)
+            {
+                for (int j = 0; j < n; j++)
+                {
+                    if (pacific[i,j] && atlantic[i,j])
+                    {
+                        list.Add(new List<int> { i, j });
+                    }
+                }
+            }
+
+            return list;
+
+            void dfs(int[][] mat, int i, int j, int previousHeight, bool[,] visited)
+            {
+                if (i < 0 || j < 0 || i > mat.Length - 1 || j > mat[0].Length - 1 || mat[i][j] < previousHeight || visited[i,j])
+                {
+                    return;
+                }
+
+                visited[i,j] = true;
+
+                dfs(mat, i + 1, j, mat[i][j], visited);                
+                dfs(mat, i - 1, j, mat[i][j], visited);
+                dfs(mat, i, j + 1, mat[i][j], visited);
+                dfs(mat, i, j - 1, mat[i][j], visited);
+            }
         }
     }
 }
