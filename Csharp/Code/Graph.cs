@@ -1,4 +1,5 @@
-﻿using Code.Models;
+﻿using Code.Ds;
+using Code.Models;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -108,6 +109,72 @@ namespace Code
             }
 
             return cloneNode[0];
+        }
+
+        /* Given an m x n 2d grid map of '1's (land) and '0's (water), return the number of islands.
+         * An island is surrounded by water and is formed by connecting adjacent lands horizontally or vertically. 
+         * You may assume all four edges of the grid are all surrounded by water.
+         */
+        public int NumIslands(char[][] grid)
+        {
+            if (grid == null || grid.Length == 0)
+            {
+                return 0;
+            }
+
+            int numIsland = 0;
+            int row = grid.Length;
+            int col = grid[0].Length;
+
+            DisjointSet ds = new DisjointSet(row * col);
+
+            for (int i = 0; i < row; i++)
+            {
+                for (int j = 0; j < col; j++)
+                {
+                    if (grid[i][j] == '1')
+                    {
+                        numIsland++;
+                    }
+                }
+            }
+
+            for (int i = 0; i < row; i++)
+            {
+                for (int j = 0; j < col; j++)
+                {
+                    if (grid[i][j] == '1')
+                    {
+                        int x = i * col + j;
+
+                        if (i < row - 1 && grid[i + 1][j] == '1')
+                        {
+                            int y = (i + 1) * col + j;
+
+                            if (!ds.IsConnected(x, y))
+                            {
+                                numIsland--;
+                            };
+
+                            ds.Union(x, y);
+                        }
+
+                        if (j < col - 1 && grid[i][j + 1] == '1')
+                        {
+                            int y = i * col + (j + 1);
+
+                            if (!ds.IsConnected(x, y))
+                            {
+                                numIsland--;
+                            };
+
+                            ds.Union(x, y);
+                        }
+                    }
+                }
+            }
+
+            return numIsland;
         }
 
         /* Given an m x n matrix of non-negative integers representing the height of each unit cell in a continent, 
