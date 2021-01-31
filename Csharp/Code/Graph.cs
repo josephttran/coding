@@ -111,6 +111,89 @@ namespace Code
             return cloneNode[0];
         }
 
+        /* Given an unsorted array of integers nums, return the length of the longest consecutive elements sequence.
+         */
+        public int LongestConsecutiveSequence(int[] nums)
+        {
+            if(nums.Length == 0)
+            {
+                return 0;
+            }
+
+            Dictionary<int, int> map = new Dictionary<int, int>();
+            Dictionary<int, int> mapSize = new Dictionary<int, int>();
+            int count = 1;
+
+            for (int i = 0; i < nums.Length; i++)
+            {
+                if (!map.TryGetValue(nums[i], out _))
+                {
+                    map[nums[i]] = nums[i];
+                    mapSize[nums[i]] = 1;
+                }
+            }
+
+            for (int i = 0; i < nums.Length; i++)
+            {
+                Union(nums[i], nums[i] - 1);
+                Union(nums[i], nums[i] + 1);
+            }
+
+            return count;
+
+            int Find(int x)
+            {
+                if (!map.TryGetValue(x, out _))
+                {
+                    return Int32.MinValue;
+                }
+
+                while (map[x] != x)
+                {
+                    map[x] = map[map[x]];
+                    x = map[x];
+                }
+
+                return x;
+            }
+
+            void Union(int x, int y)
+            {
+                int xRoot = Find(x);
+                int yRoot = Find(y);
+
+                if (xRoot == Int32.MinValue || yRoot == Int32.MinValue)
+                {
+                    return;
+                }
+
+                if (xRoot == yRoot)
+                {
+                    return;
+                }
+
+                if (mapSize[xRoot] > mapSize[yRoot])
+                {
+                    map[yRoot] = xRoot;
+                    mapSize[xRoot] = mapSize[xRoot] + mapSize[yRoot];
+                    if(mapSize[xRoot] > count)
+                    {
+                        count = mapSize[xRoot];
+                    }
+                }
+                else
+                {
+                    map[xRoot] = yRoot;
+                    mapSize[yRoot] = mapSize[xRoot] + mapSize[yRoot];
+
+                    if (mapSize[yRoot] > count)
+                    {
+                        count = mapSize[yRoot];
+                    }
+                }
+            }
+        }
+
         /* Given an m x n 2d grid map of '1's (land) and '0's (water), return the number of islands.
          * An island is surrounded by water and is formed by connecting adjacent lands horizontally or vertically. 
          * You may assume all four edges of the grid are all surrounded by water.
